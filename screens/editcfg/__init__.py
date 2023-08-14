@@ -1,7 +1,10 @@
 import json
 from os.path import basename
 from tkinter import (
-    Toplevel, Frame, Button, Event
+    Widget,
+    Toplevel, Frame, Button, Entry,
+    Event,
+    StringVar
 )
 
 from .table import Table, Column
@@ -14,6 +17,9 @@ class EditConfigScreen(Screen):
     config: dict = None
     columns_table: Table
     canceled: bool = True
+    entry: Entry | None = None
+    entry_var: StringVar = StringVar()
+    selected_cell: tuple[int, int] = 0, 0
 
     def __init__(self, master: Toplevel, path: str = DEFAULT_CONFIG):
         self.id = "editcfg"
@@ -50,10 +56,10 @@ class EditConfigScreen(Screen):
         columns_frame.rowconfigure(0, weight=1)
         columns_frame.columnconfigure(0, weight=1)
 
-        for i, (name, info) in enumerate(self.config["columns"].items()):
+        for i, info in enumerate(self.config["columns"]):
             column: Column = Column(self.columns_table)
             for j, (text, color) in enumerate((
-                    (name, 'gray'),
+                    (info["name"], 'gray'),
                     (info["default"], 'white')
             )):
                 column.append(
@@ -61,7 +67,7 @@ class EditConfigScreen(Screen):
                         column.frame,
                         text=text,
                         background=color,
-                        command=lambda i=i, j=j: self.edit_column(i, j)
+                        command=lambda x=i, y=j: self.edit_column(x, y)
                     )
                 )
 
@@ -72,10 +78,57 @@ class EditConfigScreen(Screen):
             sticky='nesw'
         )
 
-    def edit_column(self, i, j, new: bool = False):
-        print(
-            self.columns_table[i][j]['text']
+    def edit_column(self, x, y):
+        if self.entry is not None:
+            self.end_column_edit()
+
+        self.selected_cell = x, y
+
+        if self.config["columns"][x]["type"] != "text" and y != 0:
+            return
+
+        widget: Widget = self.columns_table[x][y]
+        self.entry_var.set(widget["text"])
+
+        self.entry = Entry(
+            self.columns_table[x].frame,
+            background=widget["background"],
+            font=widget["font"],
+            justify='left',
+            relief='sunken',
+            textvariable=self.entry_var
         )
+        self.entry.place(
+            x=widget.winfo_x(), y=widget.winfo_y(),
+            width=widget.winfo_width(), height=widget.winfo_height()
+        )
+
+        self.entry.select_range(0, 'end')
+        self.entry.focus_set()
+
+        self.entry.bind('<FocusOut>', lambda e: self.end_column_edit())
+        self.entry.bind('<Return>', lambda e: self.end_column_edit())
+
+    def end_column_edit(self):
+        if self.entry is None:
+            return
+
+        self.entry.destroy()
+        self.entry = None
+
+        x, y = self.selected_cell
+
+        if self.config["columns"][x]["type"] != "text" and y != 0:
+            return
+
+        if y == 0:
+            self.config["columns"][x]["name"] = \
+                self.columns_table[x][y]["text"] = \
+                self.entry_var.get()
+        else:
+            self.config["columns"][x]["default"] = \
+                self.columns_table[x][y]["text"] = \
+                self.entry_var.get()
 
     def save(self):
         self.config["tags"] = self.compiled_elements["tags"].get().split()

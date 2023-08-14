@@ -1,6 +1,7 @@
 import json
 import os
 from tkinter import (
+    Widget,
     Toplevel,
     Event,
     messagebox as msgbox
@@ -73,8 +74,11 @@ class LoadConfigScreen(Screen):
 
         self.edit_config_screen.show()
 
-    def end_editing(self, *_):
+    def end_editing(self, e: Event):
         if self.edit_config_screen is None:
+            return
+
+        if e.widget.winfo_toplevel() != e.widget:
             return
 
         if self.edit_config_screen.canceled:

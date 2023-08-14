@@ -1,19 +1,27 @@
 {
     "tags": [],
-    "columns": {
-        "Description": {
+    "columns": [
+        {
+            "name": "Date",
+            "type": "date",
+            "default": "now"
+        },
+        {
+            "name": "Description",
             "type": "text",
             "default": "No description"
         },
-        "Performance": {
+        {
+            "name": "Performance",
             "type": "scale",
             "range": [-1.0, 1.0],
             "step": 0.1,
             "default": 0.0
         },
-        "Teeth Brushed": {
+        {
+            "name": "Teeth Brushed",
             "type": "bool",
             "default": false
         }
-    }
+    ]
 }
