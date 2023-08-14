@@ -1,0 +1,19 @@
+{
+    "tags": [],
+    "columns": {
+        "Description": {
+            "type": "text",
+            "default": "No description"
+        },
+        "Performance": {
+            "type": "scale",
+            "range": [-1.0, 1.0],
+            "step": 0.1,
+            "default": 0.0
+        },
+        "Teeth Brushed": {
+            "type": "bool",
+            "default": false
+        }
+    }
+}

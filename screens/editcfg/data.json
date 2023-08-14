@@ -1,0 +1,110 @@
+{
+    "root_config": {
+        "title": "EditConfigScreen"
+    },
+    "args": {
+        "relief": "ridge",
+        "bd": 2
+    },
+    "grid_config": {
+        "rows": [1, 1, 1, 1, 1, 1],
+        "cols": [10, 10, 10, 1, 10]
+    },
+    "elements": {
+        "tag_label": {
+            "type": "Label",
+            "args": {
+                "text": "Tags (separate with space):",
+                "anchor": "w"
+            },
+            "grid": {
+                "row": 1,
+                "column": 1,
+                "sticky": "esw"
+            }
+        },
+        "tags": {
+            "type": "Entry",
+            "grid": {
+                "row": 2,
+                "column": 1,
+                "columnspan": 3,
+                "sticky": "new"
+            }
+        },
+        "columns_label": {
+            "type": "Label",
+            "args": {
+                "text": "Columns:",
+                "anchor": "sw"
+            },
+            "grid": {
+                "row": 3,
+                "column": 1,
+                "columnspan": 3,
+                "sticky": "sw"
+            }
+        },
+        "add_column": {
+            "type": "Button",
+            "args": {
+                "text": "+"
+            },
+            "grid": {
+                "row": 3,
+                "column": 3,
+                "sticky": "esw"
+            }
+        },
+        "columns_frame": {
+            "type": "Frame",
+            "args": {
+                "relief": "ridge",
+                "bd": 2
+            },
+            "grid": {
+                "row": 4,
+                "column": 1,
+                "columnspan": 3,
+                "sticky": "new"
+            }
+        },
+        "save_cancel_frame": {
+            "type": "Frame",
+            "grid_config": {
+                "rows": [1],
+                "cols": [1, 1]
+            },
+            "elements": {
+                "save": {
+                    "type": "Button",
+                    "args": {
+                        "text": "Save"
+                    },
+                    "grid": {
+                        "row": 0,
+                        "column": 0,
+                        "sticky": "ew"
+                    }
+                },
+                "cancel": {
+                    "type": "Button",
+                    "args": {
+                        "text": "Cancel"
+                    },
+                    "grid": {
+                        "row": 0,
+                        "column": 1,
+                        "sticky": "ew"
+                    }
+                }
+            },
+            "grid": {
+                "row": 5,
+                "column": 2,
+                "columnspan": 2,
+                "sticky": "ew"
+            }
+        }
+    }
+}

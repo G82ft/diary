@@ -1,0 +1,85 @@
+{
+    "root_config" : {
+        "title": "LoadConfigScreen",
+        "start_size": [500, 250],
+        "max_size": [700, 700],
+        "min_size": [400, 250]
+    },
+    "args": {
+        "relief": "ridge",
+        "bd": 2
+    },
+    "grid_config": {
+        "rows": [1, 0, 10, 0, 1],
+        "cols": [1, 10, 0, 1]
+    },
+    "elements": {
+        "info_label": {
+            "type": "Label",
+            "args": {
+                "text": "Searching for configs...",
+                "anchor": "w"
+            },
+            "grid": {
+                "row": 1,
+                "column": 1,
+                "sticky": "ew"
+            }
+        },
+        "config_buttons": {
+            "type": "Frame",
+            "elements": {
+                "add_button": {
+                    "type": "Button",
+                    "args": {
+                        "text": " + "
+                    },
+                    "grid": {
+                        "row": 0,
+                        "column": 0,
+                        "sticky": "e"
+                    }
+                },
+                "delete_button": {
+                    "type": "Button",
+                    "args": {
+                        "text": " - "
+                    },
+                    "grid": {
+                        "row": 0,
+                        "column": 1,
+                        "sticky": "w"
+                    }
+                }
+            },
+            "grid": {
+                "row": 1,
+                "column": 2,
+                "sticky": "e"
+            }
+        },
+        "config_listbox": {
+            "type": "Listbox",
+            "args": {
+                "selectmode": "single"
+            },
+            "grid": {
+                "row": 2,
+                "column": 1,
+                "columnspan": 2,
+                "sticky": "nesw"
+            }
+        },
+        "open_button": {
+            "type": "Button",
+            "args": {
+                "text": "Open"
+            },
+            "grid": {
+                "row": 3,
+                "column": 2,
+                "sticky": "ew"
+            }
+        }
+    }
+}
