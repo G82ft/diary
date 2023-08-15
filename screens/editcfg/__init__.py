@@ -67,7 +67,7 @@ class EditConfigScreen(Screen):
                         column.frame,
                         text=text,
                         background=color,
-                        command=lambda x=i, y=j: self.edit_column(x, y)
+                        command=lambda x=i, y=j: self.edit_text(x, y)
                     )
                 )
 
@@ -78,9 +78,9 @@ class EditConfigScreen(Screen):
             sticky='nesw'
         )
 
-    def edit_column(self, x, y):
+    def edit_text(self, x: int, y: int):
         if self.entry is not None:
-            self.end_column_edit()
+            self.end_text_edit()
 
         self.selected_cell = x, y
 
@@ -106,10 +106,10 @@ class EditConfigScreen(Screen):
         self.entry.select_range(0, 'end')
         self.entry.focus_set()
 
-        self.entry.bind('<FocusOut>', lambda e: self.end_column_edit())
-        self.entry.bind('<Return>', lambda e: self.end_column_edit())
+        self.entry.bind('<FocusOut>', lambda e: self.end_text_edit())
+        self.entry.bind('<Return>', lambda e: self.end_text_edit())
 
-    def end_column_edit(self):
+    def end_text_edit(self):
         if self.entry is None:
             return
 
@@ -117,9 +117,6 @@ class EditConfigScreen(Screen):
         self.entry = None
 
         x, y = self.selected_cell
-
-        if self.config["columns"][x]["type"] != "text" and y != 0:
-            return
 
         if y == 0:
             self.config["columns"][x]["name"] = \
