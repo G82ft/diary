@@ -1,7 +1,6 @@
 import json
 import os
 from tkinter import (
-    Widget,
     Toplevel,
     Event,
     messagebox as msgbox
@@ -36,11 +35,7 @@ class LoadConfigScreen(Screen):
         self.elements["open_button"]["args"]["command"] = self.open_config
 
     def configure_element(self, name: str, element_type: type, element):
-        match name:
-            case "config_listbox":
-                pass
-            case _:
-                pass
+        pass
 
     def on_load(self, e: Event):
         for i, total, name in get_configs():
