@@ -178,14 +178,17 @@ class Screen(ABC):
             e.setdefault("args", {})
             args: dict = e["args"]
 
-            if e["type"] == 'Frame':
-                element = Screen._compile_frame(
-                    frame,
-                    e["args"], e.get("grid_config", {}),
-                    e.get("elements", {}), compiled_elements, configure_element
-                )
-            else:
-                element = TYPES[e["type"]](frame, **args)
+            match e["type"]:
+                case 'Frame':
+                    element = Screen._compile_frame(
+                        frame,
+                        e["args"], e.get("grid_config", {}),
+                        e.get("elements", {}), compiled_elements, configure_element
+                    )
+                case 'OptionMenu':
+                    element = TYPES[e["type"]](frame, *args.pop("values"), **args)
+                case _:
+                    element = TYPES[e["type"]](frame, **args)
 
             element.grid(**e["grid"])
             configure_element(name, e["type"], element)
