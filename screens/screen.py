@@ -7,6 +7,7 @@ from tkinter import (
     Variable,
     Event
 )
+from tkinter.font import nametofont
 
 TYPES: dict[str: type] = {
     "Tk": Tk,
@@ -187,6 +188,9 @@ class Screen(ABC):
                     )
                 case 'OptionMenu':
                     element = TYPES[e["type"]](frame, *args.pop("values"), **args)
+                case 'Entry':
+                    args["font"] = nametofont('TkDefaultFont')
+                    element = TYPES[e["type"]](frame, **args)
                 case _:
                     element = TYPES[e["type"]](frame, **args)
 
