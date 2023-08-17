@@ -173,8 +173,6 @@ class Screen(ABC):
             case _:
                 element = TYPES[element_config["type"]](master, **args)
 
-        element.grid(**element_config["grid"])
-
         return element
 
     @staticmethod
