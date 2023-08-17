@@ -2,13 +2,13 @@ import json
 from os.path import basename
 from tkinter import (
     Widget,
-    Toplevel, Frame, Button, Entry,
+    Toplevel, Frame, Entry,
     Event,
     StringVar
 )
 
-from .table import Table, Column
 from utils.config import is_config, DEFAULT_CONFIG
+from .table import Table, Column
 from ..screen import Screen
 
 
@@ -63,11 +63,16 @@ class EditConfigScreen(Screen):
                     (info["default"], 'white')
             )):
                 column.append(
-                    Button(
+                    Screen.compile_element(
                         column.frame,
-                        text=text,
-                        background=color,
-                        command=lambda x=i, y=j: self.edit_text(x, y)
+                        {
+                            "type": 'Button',
+                            "args": {
+                                "text": text,
+                                "background": color,
+                                "command": lambda x=i, y=j: self.edit_text(x, y)
+                            }
+                        }
                     )
                 )
 
@@ -90,14 +95,20 @@ class EditConfigScreen(Screen):
         widget: Widget = self.columns_table[x][y]
         self.entry_var.set(widget["text"])
 
-        self.entry = Entry(
+        self.entry: Entry = Screen.compile_element(
             self.columns_table[x].frame,
-            background=widget["background"],
-            font=widget["font"],
-            justify='left',
-            relief='sunken',
-            textvariable=self.entry_var
+            {
+                "type": 'Entry',
+                "args": {
+                    "background": widget["background"],
+                    "font": widget["font"],
+                    "justify": 'left',
+                    "relief": 'sunken',
+                    "textvariable": self.entry_var
+                }
+            }
         )
+
         self.entry.place(
             x=widget.winfo_x(), y=widget.winfo_y(),
             width=widget.winfo_width(), height=widget.winfo_height()
