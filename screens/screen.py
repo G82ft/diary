@@ -161,6 +161,23 @@ class Screen(ABC):
         pass
 
     @staticmethod
+    def compile_element(master, element_config: dict[str: any]):
+        args: dict[str: any] = element_config["args"]
+
+        match element_config["type"]:
+            case 'OptionMenu':
+                element = TYPES[element_config["type"]](master, *args.pop("values"), **args)
+            case 'Entry':
+                args["font"] = nametofont('TkDefaultFont')
+                element = TYPES[element_config["type"]](master, **args)
+            case _:
+                element = TYPES[element_config["type"]](master, **args)
+
+        element.grid(**element_config["grid"])
+
+        return element
+
+    @staticmethod
     def _compile_frame(root,
                        args, grid: dict[str: list[int, int]],
                        elements: dict, compiled_elements: dict, configure_element):
@@ -177,22 +194,15 @@ class Screen(ABC):
         for name, e in elements.items():
             e: dict
             e.setdefault("args", {})
-            args: dict = e["args"]
 
-            match e["type"]:
-                case 'Frame':
-                    element = Screen._compile_frame(
-                        frame,
-                        e["args"], e.get("grid_config", {}),
-                        e.get("elements", {}), compiled_elements, configure_element
-                    )
-                case 'OptionMenu':
-                    element = TYPES[e["type"]](frame, *args.pop("values"), **args)
-                case 'Entry':
-                    args["font"] = nametofont('TkDefaultFont')
-                    element = TYPES[e["type"]](frame, **args)
-                case _:
-                    element = TYPES[e["type"]](frame, **args)
+            if e["type"] == 'Frame':
+                element = Screen._compile_frame(
+                    frame,
+                    e["args"], e.get("grid_config", {}),
+                    e.get("elements", {}), compiled_elements, configure_element
+                )
+            else:
+                element = Screen.compile_element(frame, e)
 
             element.grid(**e["grid"])
             configure_element(name, e["type"], element)
