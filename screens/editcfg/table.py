@@ -1,4 +1,4 @@
-from tkinter import Widget, Toplevel, Frame
+from tkinter import Widget, Frame
 
 
 class Table:
@@ -129,4 +129,3 @@ class Column:
     def destroy(self):
         for row in self.rows:
             row.destroy()
-
