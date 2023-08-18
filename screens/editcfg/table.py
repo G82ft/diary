@@ -31,6 +31,7 @@ class Table:
 
         index: int = len(self.columns) - 1
         self.frame.columnconfigure(index, weight=1)
+
         self.update(index)
 
     def insert(self, index: int, column: 'Column') -> None:
@@ -50,7 +51,7 @@ class Table:
             column.grid_remove()
             column.grid(
                 row=0,
-                column=start,
+                column=index,
                 sticky='nesw'
             )
 
@@ -101,7 +102,7 @@ class Column:
     def insert(self, index: int, value: Widget) -> None:
         self.rows.insert(index, value)
 
-        self.frame.rowconfigure(len(self.rows) - 1)
+        self.frame.rowconfigure(len(self.rows) - 1, weight=1)
 
         self.update(index)
 
