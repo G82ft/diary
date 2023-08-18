@@ -30,14 +30,14 @@ class Table:
         self.columns.append(column)
 
         index: int = len(self.columns) - 1
-        self.frame.columnconfigure(index, weight=1)
+        self.frame.columnconfigure(index, weight=1, uniform='columns')
 
         self.update(index)
 
     def insert(self, index: int, column: 'Column') -> None:
         self.columns.insert(index, column)
 
-        self.frame.columnconfigure(len(self.columns) - 1, weight=1)
+        self.frame.columnconfigure(len(self.columns) - 1, weight=1, uniform='columns')
 
         self.update(index)
 
