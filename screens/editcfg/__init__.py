@@ -4,22 +4,29 @@ from tkinter import (
     Widget,
     Toplevel, Frame, Entry,
     Event,
-    StringVar
+    StringVar, Button,
+    messagebox as msgbox
 )
 
 from utils.config import is_config, DEFAULT_CONFIG
 from .table import Table, Column
 from ..screen import Screen
+from ..editcol import EditColumnScreen
 
 
 class EditConfigScreen(Screen):
     path: str
     config: dict = None
-    columns_table: Table
+
     canceled: bool = True
+
+    columns_table: Table
+
+    selected_cell: tuple[int, int] = 0, 0
     entry: Entry | None = None
     entry_var: StringVar = StringVar()
-    selected_cell: tuple[int, int] = 0, 0
+
+    edit_column_screen: EditColumnScreen | None = None
 
     def __init__(self, master: Toplevel, path: str = DEFAULT_CONFIG):
         self.id = "editcfg"
@@ -62,18 +69,20 @@ class EditConfigScreen(Screen):
                     (info["name"], 'gray'),
                     (info["default"], 'white')
             )):
-                column.append(
-                    Screen.compile_element(
-                        column.frame,
-                        {
-                            "type": 'Button',
-                            "args": {
-                                "text": text,
-                                "background": color,
-                                "command": lambda x=i, y=j: self.edit_text(x, y)
-                            }
+                cell: Button = Screen.compile_element(
+                    column.frame,
+                    {
+                        "type": 'Button',
+                        "args": {
+                            "text": text,
+                            "background": color,
+                            "command": lambda x=i, y=j: self.edit_text(x, y)
                         }
-                    )
+                    }
+                )
+                cell.bind('<ButtonRelease-3>', lambda _, x=i, y=j: self.edit_column(x))
+                column.append(
+                    cell
                 )
 
             self.columns_table.append(column)
@@ -137,6 +146,20 @@ class EditConfigScreen(Screen):
             self.config["columns"][x]["default"] = \
                 self.columns_table[x][y]["text"] = \
                 self.entry_var.get()
+
+    def edit_column(self, x: int):
+        if self.edit_column_screen is not None:
+            msgbox.showwarning(
+                'Edit column',
+                'You are already editing another column.'
+            )
+            return
+
+        self.edit_column_screen = EditColumnScreen(
+            self.root,
+            self.config["columns"][x]
+        )
+        self.edit_column_screen.show()
 
     def save(self):
         self.config["tags"] = self.compiled_elements["tags"].get().split()
