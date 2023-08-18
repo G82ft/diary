@@ -52,16 +52,13 @@ class Screen(ABC):
     master = None
     frame: Frame = None
 
-    args: dict[str: tuple[any] | dict[str: any]] = {}
+    args: dict[str: tuple[any] | dict[str: any]]
     elements: dict[
         dict[str: type | list[any] | dict[str: any]]
-    ] = {}
-    compiled_elements: dict = {}
-    variables: dict[str: Variable] = {}
-    grid_config: dict[str: list[int]] = {
-        "rows": (),
-        "cols": ()
-    }
+    ]
+    compiled_elements: dict
+    variables: dict[str: Variable]
+    grid_config: dict[str: list[int]]
 
     def __init__(self, master: Toplevel = None):
         self.master = master
@@ -69,6 +66,15 @@ class Screen(ABC):
 
         with open(f"screens/{self.id}/data.json") as file:
             data: dict = json.load(file)
+
+        self.args = {}
+        self.elements = {}
+        self.compiled_elements = {}
+        self.variables = {}
+        self.grid_config = {
+            "rows": (),
+            "cols": ()
+        }
 
         root_config: dict[str: str | list[int, int]] = {
             "title": "tk",
