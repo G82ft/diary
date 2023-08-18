@@ -166,7 +166,7 @@ class Screen(ABC):
 
         match element_config["type"]:
             case 'OptionMenu':
-                element = TYPES[element_config["type"]](master, *args.pop("values"), **args)
+                element = TYPES[element_config["type"]](master, *args)
             case 'Entry':
                 args["font"] = nametofont('TkDefaultFont')
                 element = TYPES[element_config["type"]](master, **args)

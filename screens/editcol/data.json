@@ -45,21 +45,19 @@
         },
         "type_selection": {
             "type": "OptionMenu",
-            "args": {
-                "values": [
-                    "text",
-                    "bool",
-                    "int",
-                    "float",
-                    "date",
-                    "scale",
-                    "gradient"
-                ]
-            },
+            "args": [
+                "text",
+                "bool",
+                "int",
+                "float",
+                "date",
+                "scale",
+                "gradient"
+            ],
             "grid": {
                 "row": 2,
                 "column": 2,
-                "sticky": "ew"
+                "sticky": "e"
             }
         },
         "default_label": {
@@ -83,7 +81,7 @@
             "grid": {
                 "row": 3,
                 "column": 2,
-                "sticky": "ew"
+                "sticky": "e"
             }
         },
         "specific_settings": {
