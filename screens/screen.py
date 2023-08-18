@@ -82,7 +82,7 @@ class Screen(ABC):
 
         self.args |= data["args"]
         self.elements = data["elements"]
-        self.grid_config |= data["grid_config"]
+        self.grid_config |= data.get("grid_config", {})
 
     def configure_root(self, root_config: dict):
         self.root.title(root_config["title"])
