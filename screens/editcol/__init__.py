@@ -1,5 +1,5 @@
 from tkinter import (
-    Toplevel,
+    Toplevel, Text,
     Event,
     StringVar
 )
@@ -14,7 +14,9 @@ class EditColumnScreen(Screen):
         "default": 'empty'
     }
 
+    name_var: StringVar = StringVar()
     type_var: StringVar = StringVar()
+    default_var: StringVar = StringVar()
 
     def __init__(self, master: Toplevel, column_config: dict):
         self.id = 'editcol'
@@ -28,14 +30,18 @@ class EditColumnScreen(Screen):
         else:
             root_config["title"] = f'Edit column "{self.column_config["name"]}"'
 
-        print(self.grid_config)
-
     def preconfigure_elements(self):
+        self.elements["name_entry"]["args"]["textvariable"] = self.name_var
+
         self.elements["type_selection"]["args"].insert(0, self.type_var)
-        self.type_var.set(self.column_config["type"])
 
     def configure_element(self, name: str, element_type: type, element):
         pass
 
     def on_load(self, e: Event):
-        pass
+        self.name_var.set(self.column_config["name"])
+
+        self.type_var.set(self.column_config["type"])
+
+        default_text: Text = self.compiled_elements["default_text"]
+        default_text.insert(0, self.column_config["default"])
