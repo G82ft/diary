@@ -5,7 +5,7 @@ from tkinter import (
     Button, Canvas, Checkbutton, Entry, Frame, Label, LabelFrame, Listbox, Menu, Menubutton, Message, OptionMenu,
     PanedWindow, Radiobutton, Scale, Scrollbar, Spinbox, Text, Toplevel,
     Variable,
-    Event
+    Widget, Event
 )
 from tkinter.font import nametofont
 
@@ -56,7 +56,7 @@ class Screen(ABC):
     elements: dict[
         dict[str: type | list[any] | dict[str: any]]
     ]
-    compiled_elements: dict
+    compiled_elements: dict[str: Widget]
     variables: dict[str: Variable]
     grid_config: dict[str: list[int]]
 
