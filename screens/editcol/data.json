@@ -76,16 +76,13 @@
                 "sticky": "nw"
             }
         },
-        "default_text": {
-            "type": "Text",
-            "args": {
-                "width": 30,
-                "height": 5
-            },
+        "default_value": {
+            "type": "Frame",
+            "args": {},
             "grid": {
                 "row": 3,
                 "column": 2,
-                "sticky": "ne"
+                "sticky": "nesw"
             }
         },
         "specific_settings": {

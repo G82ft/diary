@@ -1,5 +1,5 @@
 from tkinter import (
-    Toplevel, Text,
+    Toplevel,
     Event,
     StringVar
 )
@@ -43,5 +43,4 @@ class EditColumnScreen(Screen):
 
         self.type_var.set(self.column_config["type"])
 
-        default_text: Text = self.compiled_elements["default_text"]
-        default_text.insert(0, self.column_config["default"])
+        print(self.compiled_elements["default_value"])
