@@ -51,7 +51,7 @@
             "type": "OptionMenu",
             "args": [
                 "text",
-                "bool",
+                "checkbox",
                 "int",
                 "float",
                 "date",
