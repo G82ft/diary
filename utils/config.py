@@ -38,6 +38,33 @@ def is_config(path: str) -> bool:
     if any(key not in data for key in ("columns", "tags")):
         return False
 
+    for column in data["columns"]:
+        if not validate_column(column):
+            return False
+
+    return True
+
+
+def validate_column(column: dict[str]):
+    if "name" not in column:
+        return False
+
+    if "type" not in column:
+        return False
+
+    match column["type"]:
+        case 'scale':
+            if 'range' not in column:
+                return False
+        case 'color':
+            if 'list' not in column:
+                return False
+        case 'gradient':
+            if 'start' not in column:
+                return False
+            if 'end' not in column:
+                return False
+
     return True
 
 
