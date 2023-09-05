@@ -5,6 +5,10 @@ CONFIGS_PATH: str = 'configs/'
 DEFAULT_CONFIG: str = 'configs/default.json'
 
 
+class InvalidColumnException(ValueError):
+    pass
+
+
 def get_configs():
     names: list[str] = os.listdir(CONFIGS_PATH)
     total: int = len(names)
@@ -24,7 +28,7 @@ def get_configs():
         yield i, total, name
 
 
-def is_config(path: str) -> bool:
+def is_config(path: str):
     if not path.endswith('.json'):
         return False
 
@@ -35,14 +39,26 @@ def is_config(path: str) -> bool:
         except json.JSONDecodeError:
             return False
 
-    if any(key not in data for key in ("columns", "tags")):
+    return True
+
+
+def validate_config(path: str) -> bool:
+    """Raises an appropriate exception, if the config is not valid.
+
+    :raises JSONDecodeError:"""
+    if not path.endswith('.json'):
         return False
 
-    for column in data["columns"]:
-        if not validate_column(column):
-            return False
+    data: dict = {}
+    with open(path) as file:
+        data |= json.load(file)
 
-    return True
+    for key in ("columns", "tags"):
+        if key not in data:
+            raise ValueError(f'Missing a key: {key}!')
+
+    for column in data["columns"]:
+        validate_column(column)
 
 
 def validate_column(column: dict[str]):
@@ -71,6 +87,8 @@ def validate_column(column: dict[str]):
 def get_default() -> dict:
     if not is_config(DEFAULT_CONFIG):
         raise OSError('Default file is not config!')
+
+    validate_config(DEFAULT_CONFIG)
 
     with open(DEFAULT_CONFIG) as file:
         data: dict = json.load(file)
