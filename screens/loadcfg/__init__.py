@@ -129,4 +129,5 @@ class LoadConfigScreen(Screen):
         )
 
     def open_config(self):
+        # TODO: Add validation and handling of invalid configs
         pass

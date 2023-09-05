@@ -8,7 +8,7 @@ from tkinter import (
     messagebox as msgbox
 )
 
-from utils.config import is_config, DEFAULT_CONFIG
+from utils.config import validate_config, DEFAULT_CONFIG
 from .table import Table, Column
 from ..screen import Screen
 from ..editcol import EditColumnScreen
@@ -34,8 +34,8 @@ class EditConfigScreen(Screen):
 
         super().__init__(master)
 
-        if not is_config(self.path):
-            raise ValueError(f'Passed path is not config! ("{self.path}")')
+        # TODO: Add handling
+        validate_config(self.path)
 
         with open(self.path) as file:
             self.config = json.load(file)
