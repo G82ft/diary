@@ -6,6 +6,24 @@ from tkinter import (
 
 from ..screen import Screen
 
+specific_settings: dict[str: dict] = {
+    "scale": {
+        "args": {},
+        "grid_config": {},
+        "elements": {}
+    },
+    "color": {
+        "args": {},
+        "grid_config": {},
+        "elements": {}
+    },
+    "gradient": {
+        "args": {},
+        "grid_config": {},
+        "elements": {}
+    }
+}
+
 
 class EditColumnScreen(Screen):
     column_config: dict = {
