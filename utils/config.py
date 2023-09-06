@@ -3,6 +3,16 @@ import json
 
 CONFIGS_PATH: str = 'configs/'
 DEFAULT_CONFIG: str = 'configs/default.json'
+REQUIRED_KEYS: dict = {
+    "scale": ("range",),
+    "color": ("list",),
+    "gradient": ("start", "end"),
+    "text": (),
+    "checkbox": (),
+    "int": (),
+    "float": (),
+    "date": ()
+}
 
 
 class InvalidColumnException(ValueError):
@@ -28,7 +38,7 @@ def get_configs():
         yield i, total, name
 
 
-def is_config(path: str):
+def is_config(path: str) -> bool:
     if not path.endswith('.json'):
         return False
 
@@ -42,12 +52,12 @@ def is_config(path: str):
     return True
 
 
-def validate_config(path: str) -> bool:
+def validate_config(path: str) -> None:
     """Raises an appropriate exception, if the config is not valid.
 
     :raises JSONDecodeError:"""
     if not path.endswith('.json'):
-        return False
+        raise TypeError('The file is not a JSON file!')
 
     data: dict = {}
     with open(path) as file:
@@ -61,27 +71,21 @@ def validate_config(path: str) -> bool:
         validate_column(column)
 
 
-def validate_column(column: dict[str]):
+def validate_column(column: dict[str]) -> None:
     if "name" not in column:
-        return False
+        raise ValueError('Name of the column is not specified!')
 
     if "type" not in column:
-        return False
+        raise TypeError('Column type is not specified!')
 
-    match column["type"]:
-        case 'scale':
-            if 'range' not in column:
-                return False
-        case 'color':
-            if 'list' not in column:
-                return False
-        case 'gradient':
-            if 'start' not in column:
-                return False
-            if 'end' not in column:
-                return False
+    if column["type"] not in REQUIRED_KEYS:
+        raise TypeError('Unknown column type!')
 
-    return True
+    for req_key in REQUIRED_KEYS[column["type"]]:
+        if req_key not in column:
+            raise ValueError(
+                f'Missing required key for type {column["type"]}: "{req_key}"'
+            )
 
 
 def get_default() -> dict:
