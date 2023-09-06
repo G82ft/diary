@@ -15,10 +15,6 @@ REQUIRED_KEYS: dict = {
 }
 
 
-class InvalidColumnException(ValueError):
-    pass
-
-
 def get_configs():
     names: list[str] = os.listdir(CONFIGS_PATH)
     total: int = len(names)
