@@ -74,11 +74,14 @@ def validate_column(column: dict[str]) -> None:
     if "type" not in column:
         raise TypeError('Column type is not specified!')
 
+    if "data" not in column:
+        raise ValueError('Column data is missing!')
+
     if column["type"] not in REQUIRED_KEYS:
         raise TypeError('Unknown column type!')
 
     for req_key in REQUIRED_KEYS[column["type"]]:
-        if req_key not in column:
+        if req_key not in column["data"]:
             raise ValueError(
                 f'Missing required key for type {column["type"]}: "{req_key}"'
             )
