@@ -11,16 +11,6 @@ specific_settings: dict[str: dict] = {
         "args": {},
         "grid_config": {},
         "elements": {}
-    },
-    "color": {
-        "args": {},
-        "grid_config": {},
-        "elements": {}
-    },
-    "gradient": {
-        "args": {},
-        "grid_config": {},
-        "elements": {}
     }
 }
 
@@ -29,7 +19,9 @@ class EditColumnScreen(Screen):
     column_config: dict = {
         "name": 'New column',
         "type": 'text',
-        "default": 'empty'
+        "data": {
+            "default": 'empty'
+        }
     }
 
     name_var: StringVar = StringVar()
