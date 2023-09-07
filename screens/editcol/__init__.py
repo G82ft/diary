@@ -6,11 +6,59 @@ from tkinter import (
 
 from ..screen import Screen
 
-specific_settings: dict[str: dict] = {
-    "scale": {
-        "args": {},
-        "grid_config": {},
-        "elements": {}
+scale: dict[str: dict] = {
+    "args": {},
+    "grid_config": {
+        "rows": [],
+        "cols": []
+    },
+    "elements": {
+        "min_label": {
+            "type": "Label",
+            "args": {
+                "text": "Minimum",
+                "anchor": "w"
+            },
+            "grid": {
+                "row": 0,
+                "column": 0,
+                "sticky": "w"
+            }
+        },
+        "min_spinbox": {
+            "type": "Spinbox",
+            "args": {
+                "format": "%3.2"
+            },
+            "grid": {
+                "row": 0,
+                "column": 1,
+                "sticky": "e"
+            }
+        },
+        "max_label": {
+            "type": "Label",
+            "args": {
+                "text": "Maximum",
+                "anchor": "w"
+            },
+            "grid": {
+                "row": 1,
+                "column": 0,
+                "sticky": "w"
+            }
+        },
+        "max_spinbox": {
+            "type": "Spinbox",
+            "args": {
+                "format": "%3.2"
+            },
+            "grid": {
+                "row": 1,
+                "column": 1,
+                "sticky": "e"
+            }
+        }
     }
 }
 

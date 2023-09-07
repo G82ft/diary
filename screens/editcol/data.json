@@ -78,7 +78,7 @@
             }
         },
         "default_value": {
-            "type": "Frame",
+            "type": "Entry",
             "args": {},
             "grid": {
                 "row": 3,
@@ -88,7 +88,10 @@
         },
         "specific_settings": {
             "type": "Frame",
-            "args": {},
+            "args": {
+                "relief": "ridge",
+                "bd": 5
+            },
             "grid": {
                 "row": 4,
                 "column": 1,
