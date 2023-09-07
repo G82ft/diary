@@ -11,6 +11,7 @@ REQUIRED_KEYS: dict = {
     "checkbox": (),
     "int": (),
     "float": (),
+    "bool": (),
     "date": ()
 }
 
