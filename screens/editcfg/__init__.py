@@ -67,7 +67,7 @@ class EditConfigScreen(Screen):
             column: Column = Column(self.columns_table)
             for j, (text, color) in enumerate((
                     (info["name"], 'gray'),
-                    (info["default"], 'white')
+                    (info["data"]["default"], 'white')
             )):
                 cell: Button = Screen.compile_element(
                     column.frame,
