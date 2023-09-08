@@ -6,57 +6,58 @@ from tkinter import (
 
 from ..screen import Screen
 
-scale: dict[str: dict] = {
-    "args": {},
-    "grid_config": {
-        "rows": [],
-        "cols": []
-    },
-    "elements": {
-        "min_label": {
-            "type": "Label",
-            "args": {
-                "text": "Minimum",
-                "anchor": "w"
-            },
-            "grid": {
-                "row": 0,
-                "column": 0,
-                "sticky": "w"
-            }
+specific_setting: dict[str: dict] = {
+    "scale": {
+        "grid_config": {
+            "rows": [1, 1],
+            "cols": [1, 1]
         },
-        "min_spinbox": {
-            "type": "Spinbox",
-            "args": {
-                "format": "%3.2"
+        "elements": {
+            "min_label": {
+                "type": "Label",
+                "args": {
+                    "text": "Minimum",
+                    "anchor": "w"
+                },
+                "grid": {
+                    "row": 0,
+                    "column": 0,
+                    "sticky": "w"
+                }
             },
-            "grid": {
-                "row": 0,
-                "column": 1,
-                "sticky": "e"
-            }
-        },
-        "max_label": {
-            "type": "Label",
-            "args": {
-                "text": "Maximum",
-                "anchor": "w"
+            "min_spinbox": {
+                "type": "Spinbox",
+                "args": {
+                    "format": "%3.2f"
+                },
+                "grid": {
+                    "row": 0,
+                    "column": 1,
+                    "sticky": "e"
+                }
             },
-            "grid": {
-                "row": 1,
-                "column": 0,
-                "sticky": "w"
-            }
-        },
-        "max_spinbox": {
-            "type": "Spinbox",
-            "args": {
-                "format": "%3.2"
+            "max_label": {
+                "type": "Label",
+                "args": {
+                    "text": "Maximum",
+                    "anchor": "w"
+                },
+                "grid": {
+                    "row": 1,
+                    "column": 0,
+                    "sticky": "w"
+                }
             },
-            "grid": {
-                "row": 1,
-                "column": 1,
-                "sticky": "e"
+            "max_spinbox": {
+                "type": "Spinbox",
+                "args": {
+                    "format": "%3.2f"
+                },
+                "grid": {
+                    "row": 1,
+                    "column": 1,
+                    "sticky": "e"
+                }
             }
         }
     }
@@ -101,4 +102,14 @@ class EditColumnScreen(Screen):
 
         self.type_var.set(self.column_config["type"])
 
-        print(self.compiled_elements["default_value"])
+        frame = specific_setting.get(self.column_config["type"], {})
+
+        self.compiled_elements["specific_settings"] = Screen.compile_frame(
+            self.frame,
+            frame["args"], frame["grid_config"],
+            frame["elements"], self.compiled_elements,
+            lambda *_: _
+        )
+        self.compiled_elements["specific_settings"].grid(
+            self.elements["specific_settings"]["grid"]
+        )
