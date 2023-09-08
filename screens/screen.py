@@ -111,9 +111,9 @@ class Screen(ABC):
         :returns: Compiled Frame."""
         self.preconfigure_elements()
 
-        self.frame = self._compile_frame(self.root,
-                                         self.args, self.grid_config,
-                                         self.elements, self.compiled_elements, self.configure_element)
+        self.frame = self.compile_frame(self.root,
+                                        self.args, self.grid_config,
+                                        self.elements, self.compiled_elements, self.configure_element)
 
         self.frame.bind('<Map>', self.on_load)
 
@@ -182,17 +182,17 @@ class Screen(ABC):
         return element
 
     @staticmethod
-    def _compile_frame(root,
-                       args, grid: dict[str: list[int, int]],
-                       elements: dict, compiled_elements: dict, configure_element):
+    def compile_frame(root,
+                      args, grid_config: dict[str: list[int, int]],
+                      elements: dict, compiled_elements: dict, configure_element):
         frame: Frame = Frame(
             root,
             **args
         )
 
-        for row, w in enumerate(grid.get("rows", ())):
+        for row, w in enumerate(grid_config.get("rows", ())):
             frame.rowconfigure(row, weight=w)
-        for col, w in enumerate(grid.get("cols", ())):
+        for col, w in enumerate(grid_config.get("cols", ())):
             frame.columnconfigure(col, weight=w)
 
         for name, e in elements.items():
@@ -200,7 +200,7 @@ class Screen(ABC):
             e.setdefault("args", {})
 
             if e["type"] == 'Frame':
-                element = Screen._compile_frame(
+                element = Screen.compile_frame(
                     frame,
                     e["args"], e.get("grid_config", {}),
                     e.get("elements", {}), compiled_elements, configure_element
