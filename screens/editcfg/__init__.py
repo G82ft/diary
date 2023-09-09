@@ -159,7 +159,28 @@ class EditConfigScreen(Screen):
             self.root,
             self.config["columns"][x]
         )
+        self.edit_column_screen.root.bind('<Destroy>', self.end_editing)
+
+        self.root.update()
+        self.root.update_idletasks()
+
         self.edit_column_screen.show()
+
+    def end_editing(self, e: Event):
+        if self.edit_column_screen is None:
+            return
+
+        if e.widget.winfo_toplevel() != e.widget:
+            return
+
+        if self.edit_column_screen.canceled:
+            self.edit_column_screen = None
+            return
+
+        # TODO: Save config
+        print(json.dumps(self.edit_column_screen.column_config, indent=2))
+
+        self.edit_column_screen = None
 
     def save(self):
         self.config["tags"] = self.compiled_elements["tags"].get().split()

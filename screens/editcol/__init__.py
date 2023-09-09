@@ -65,13 +65,8 @@ specific_setting: dict[str: dict] = {
 
 
 class EditColumnScreen(Screen):
-    column_config: dict = {
-        "name": 'New column',
-        "type": 'text',
-        "data": {
-            "default": 'empty'
-        }
-    }
+    canceled: bool = False
+    column_config: dict
 
     name_var: StringVar = StringVar()
     type_var: StringVar = StringVar()
@@ -79,9 +74,16 @@ class EditColumnScreen(Screen):
 
     def __init__(self, master: Toplevel, column_config: dict):
         self.id = 'editcol'
-        super().__init__(master)
-
+        self.column_config = {
+            "name": 'New column',
+            "type": 'text',
+            "data": {
+                "default": 'empty'
+            }
+        }
         self.column_config |= column_config
+
+        super().__init__(master)
 
     def preconfigure_root(self, root_config: dict) -> None:
         if self.column_config["name"] == 'New column':
@@ -106,7 +108,7 @@ class EditColumnScreen(Screen):
 
         self.compiled_elements["specific_settings"] = Screen.compile_frame(
             self.frame,
-            frame["args"], frame["grid_config"],
+            frame.get("args", {}), frame["grid_config"],
             frame["elements"], self.compiled_elements,
             lambda *_: _
         )
