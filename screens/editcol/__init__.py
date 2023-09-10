@@ -28,7 +28,11 @@ specific_setting: dict[str: dict] = {
             "min_spinbox": {
                 "type": "Spinbox",
                 "args": {
-                    "format": "%3.2f"
+                    "format": "%3.2f",
+                    "from": -100,
+                    "increment": 0.1,
+                    "to": 100,
+                    "width": 7
                 },
                 "grid": {
                     "row": 0,
@@ -51,7 +55,11 @@ specific_setting: dict[str: dict] = {
             "max_spinbox": {
                 "type": "Spinbox",
                 "args": {
-                    "format": "%3.2f"
+                    "format": "%3.2f",
+                    "from": -100,
+                    "increment": 0.1,
+                    "to": 100,
+                    "width": 7
                 },
                 "grid": {
                     "row": 1,
