@@ -4,14 +4,13 @@ from tkinter import (
     Widget,
     Toplevel, Frame, Entry,
     Event,
-    StringVar, Button,
-    messagebox as msgbox
+    StringVar, messagebox as msgbox
 )
 
 from utils.config import validate_config, DEFAULT_CONFIG
 from .table import Table, Column
-from ..screen import Screen
 from ..editcol import EditColumnScreen
+from ..screen import Screen
 
 
 class EditConfigScreen(Screen):
@@ -65,22 +64,12 @@ class EditConfigScreen(Screen):
 
         for i, info in enumerate(self.config["columns"]):
             column: Column = Column(self.columns_table)
-            for j, (text, color) in enumerate((
-                    (info["name"], 'gray'),
-                    (info["data"]["default"], 'white')
-            )):
-                cell: Button = Screen.compile_element(
+            for j in range(2):
+                cell = self.create_cell(
                     column.frame,
-                    {
-                        "type": 'Button',
-                        "args": {
-                            "text": text,
-                            "background": color,
-                            "command": lambda x=i, y=j: self.edit_text(x, y)
-                        }
-                    }
+                    info,
+                    i, j
                 )
-                cell.bind('<ButtonRelease-3>', lambda _, x=i, y=j: self.edit_column(x))
                 column.append(
                     cell
                 )
@@ -147,7 +136,11 @@ class EditConfigScreen(Screen):
                 self.columns_table[x][y]["text"] = \
                 self.entry_var.get()
 
+    def update_config(self):
+        pass
+
     def edit_column(self, x: int):
+        # TODO (low): Add button pressing
         if self.edit_column_screen is not None:
             msgbox.showwarning(
                 'Edit column',
@@ -190,3 +183,42 @@ class EditConfigScreen(Screen):
 
     def cancel(self):
         self.root.destroy()
+
+    def create_cell(self, root, data: dict, i: int, j: int):
+        # TODO: Add color evaluation
+        element: dict = {
+            "type": 'Button',
+            "args": {
+                "text": str(data["data"]["default"]) if j == 1 else data["name"],
+                "background": 'gray' if j == 0 else 'white',  # ! ! !
+                "command": lambda x=i, y=j: self.edit_text(x, y)
+            }
+        }
+
+        if j != 0:
+            # TODO: Refactor this nonsense
+            match data["type"]:
+                case "scale":
+                    # TODO: Fix wierd display of scale
+                    element["type"] = 'Scale'
+                    element["args"] = {
+                        "background": 'gray' if j == 0 else 'white',  # ! ! !
+                        "orient": 'horizontal',
+                        "command": lambda _, x=i: self.update_config()
+                    }
+                case "bool":
+                    element["type"] = 'Checkbutton'
+                    element["args"] = {
+                        "background": 'gray' if j == 0 else 'white',  # ! ! !
+                        "command": lambda x=i: self.update_config()
+                    }
+                case _:
+                    element["type"] = 'Button'
+
+        cell: Widget = Screen.compile_element(
+            root,
+            element
+        )
+        cell.bind('<ButtonRelease-3>', lambda _, x=i, y=j: self.edit_column(x))
+
+        return cell
