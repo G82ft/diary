@@ -55,9 +55,7 @@
                 "int",
                 "float",
                 "date",
-                "scale",
-                "color",
-                "gradient"
+                "scale"
             ],
             "grid": {
                 "row": 2,
