@@ -139,8 +139,13 @@ class EditConfigScreen(Screen):
     def update_config(self):
         pass
 
-    def edit_column(self, x: int):
-        # TODO (low): Add button pressing
+    def column_press(self, e: Event):
+        e.widget["relief"] = 'sunken'
+        self.root.update()
+        self.root.update_idletasks()
+
+    def edit_column(self, e: Event, x: int):
+
         if self.edit_column_screen is not None:
             msgbox.showwarning(
                 'Edit column',
@@ -154,6 +159,7 @@ class EditConfigScreen(Screen):
         )
         self.edit_column_screen.root.bind('<Destroy>', self.end_editing)
 
+        e.widget["relief"] = 'raised'
         self.root.update()
         self.root.update_idletasks()
 
@@ -219,6 +225,7 @@ class EditConfigScreen(Screen):
             root,
             element
         )
-        cell.bind('<ButtonRelease-3>', lambda _, x=i, y=j: self.edit_column(x))
+        cell.bind('<Button-3>', self.column_press)
+        cell.bind('<ButtonRelease-3>', lambda e, x=i, y=j: self.edit_column(e, x))
 
         return cell
