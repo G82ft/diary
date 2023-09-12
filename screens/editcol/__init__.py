@@ -116,8 +116,8 @@ class EditColumnScreen(Screen):
 
         self.compiled_elements["specific_settings"] = Screen.compile_frame(
             self.frame,
-            frame.get("args", {}), frame["grid_config"],
-            frame["elements"], self.compiled_elements,
+            frame.get("args", {}), frame.get("grid_config", {}),
+            frame.get("elements", {}), self.compiled_elements,
             lambda *_: _
         )
         self.compiled_elements["specific_settings"].grid(
