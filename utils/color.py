@@ -46,9 +46,9 @@ class Color:
         return ''.join(f'{round(x):0>2x}' for x in (self.r, self.g, self.b))
 
 
-def evaluate_color(expression: str, color: dict,
+def evaluate_color(color: dict,
                    columns: dict[str] = None) -> Color:
-    result = eval(expression.format(**columns if columns else {}))
+    result = eval(color["expression"].format(**columns if columns else {}))
 
     match color["type"]:
         case 'continuous':
@@ -57,4 +57,3 @@ def evaluate_color(expression: str, color: dict,
             return start + (path * result)
         case 'discontinuous':
             return Color(*color["list"][round(result)])
-

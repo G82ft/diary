@@ -8,6 +8,7 @@ from tkinter import (
 )
 
 from utils.config import validate_config, DEFAULT_CONFIG
+from utils.color import evaluate_color
 from .table import Table, Column
 from ..editcol import EditColumnScreen
 from ..screen import Screen
@@ -191,12 +192,22 @@ class EditConfigScreen(Screen):
         self.root.destroy()
 
     def create_cell(self, root, data: dict, i: int, j: int):
-        # TODO: Add color evaluation
+        defaults: dict[str] = {}
+        for col in self.config["columns"]:
+            defaults[col["name"]] = col["data"]["default"]
+
+        color = 'gray'
+        if j == 1:
+            color = 'white'
+            print(data)
+            if "bg_color" in data["data"]:
+                color = '#' + evaluate_color(data["data"]["bg_color"], defaults).as_hex()
+
         element: dict = {
             "type": 'Button',
             "args": {
                 "text": str(data["data"]["default"]) if j == 1 else data["name"],
-                "background": 'gray' if j == 0 else 'white',  # ! ! !
+                "background": color,
                 "command": lambda x=i, y=j: self.edit_text(x, y)
             }
         }
@@ -205,17 +216,17 @@ class EditConfigScreen(Screen):
             # TODO: Refactor this nonsense
             match data["type"]:
                 case "scale":
-                    # TODO: Fix wierd display of scale
+                    # TODO: Fix wierd display and add min/max/step
                     element["type"] = 'Scale'
                     element["args"] = {
-                        "background": 'gray' if j == 0 else 'white',  # ! ! !
+                        "background": color,
                         "orient": 'horizontal',
                         "command": lambda _, x=i: self.update_config()
                     }
                 case "bool":
                     element["type"] = 'Checkbutton'
                     element["args"] = {
-                        "background": 'gray' if j == 0 else 'white',  # ! ! !
+                        "background": color,
                         "command": lambda x=i: self.update_config()
                     }
                 case _:
